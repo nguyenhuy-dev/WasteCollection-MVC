@@ -1,6 +1,8 @@
-﻿using WasteCollection.Entities.HuyNQ.Models;
+﻿using AutoMapper;
+using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.Repositories.HuyNQ;
 using WasteCollection.Repositories.HuyNQ.Models;
+using WasteCollection.Services.HuyNQ.DTOs;
 using WasteCollection.Services.HuyNQ.Exceptions;
 
 namespace WasteCollection.Services.HuyNQ;
@@ -9,12 +11,20 @@ public class CollectorAssignmentsHuyNqService : ICollectorAssignmentsHuyNqServic
 {
     private readonly CollectorAssignmentsHuyNqRepository _collectorAsmRepository;
 
-    public CollectorAssignmentsHuyNqService() => _collectorAsmRepository ??= new();
+    private readonly IMapper _mapper;
 
-    public async Task<int> CreateAsync(CollectorAssignmentsHuyNq asm)
+    public CollectorAssignmentsHuyNqService(IMapper mapper)
+    {
+        _collectorAsmRepository ??= new();
+
+        _mapper = mapper;
+    }
+        
+    public async Task<int> CreateAsync(CollectorAssignmentsHuyNqCreatedDto request)
     {
         try
         {
+            var asm = _mapper.Map<CollectorAssignmentsHuyNq>(request);
             return await _collectorAsmRepository.CreateAsync(asm);
         }
         catch (Exception)

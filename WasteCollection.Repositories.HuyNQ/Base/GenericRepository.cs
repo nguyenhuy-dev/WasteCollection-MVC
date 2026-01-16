@@ -38,6 +38,7 @@ public class GenericRepository<T> where T : class
         _context.Add(entity);
         return await _context.SaveChangesAsync();
     }
+
     public void Update(T entity)
     {
         //// Turning off Tracking for UpdateAsync in Entity Framework

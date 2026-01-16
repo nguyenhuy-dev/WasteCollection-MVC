@@ -1,77 +1,132 @@
-﻿@model WasteCollection.Entities.HuyNQ.Models.CollectorAssignmentsHuyNq
+﻿@model WasteCollection.Services.HuyNQ.DTOs.CollectorAssignmentsHuyNqCreatedDto;
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Collector Assignment";
 }
 
-<h1>Create</h1>
+@section Styles {
+    <script src="https://cdn.tailwindcss.com"></script>
+}
 
-<h4>CollectorAssignmentsHuyNq</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AssignmentId" class="control-label"></label>
-                <input asp-for="AssignmentId" class="form-control" />
-                <span asp-validation-for="AssignmentId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReportHuyNq" class="control-label"></label>
-                <select asp-for="ReportHuyNqid" class="form-control" asp-items="ViewBag.ReportHuyNqid"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="AssignedDate" class="control-label"></label>
-                <input asp-for="AssignedDate" class="form-control" />
-                <span asp-validation-for="AssignedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArrivalTime" class="control-label"></label>
-                <input asp-for="ArrivalTime" class="form-control" />
-                <span asp-validation-for="ArrivalTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompletionTime" class="control-label"></label>
-                <input asp-for="CompletionTime" class="form-control" />
-                <span asp-validation-for="CompletionTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CollectedWeight" class="control-label"></label>
-                <input asp-for="CollectedWeight" class="form-control" />
-                <span asp-validation-for="CollectedWeight" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProofImageUrl" class="control-label"></label>
-                <input asp-for="ProofImageUrl" class="form-control" />
-                <span asp-validation-for="ProofImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstimatedArrivalTime" class="control-label"></label>
-                <input asp-for="EstimatedArrivalTime" class="form-control" />
-                <span asp-validation-for="EstimatedArrivalTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="p-6">
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-blue-300">
+
+        <!-- Header -->
+        <div class="px-6 py-4 border-b">
+            <h1 class="text-2xl font-bold text-blue-700">Create Collector Assignment</h1>
+            <p class="text-gray-500 text-sm">Fill in the details below to create a new assignment.</p>
+        </div>
+
+        <!-- Form -->
+        <div class="p-6">
+            <form asp-action="Create" class="space-y-6">
+
+                @* Summary Validation *@
+                <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Report -->
+                    <div>
+                        <label asp-for="ReportHuyNqid" class="block font-medium text-gray-700">Report</label>
+                        <select asp-for="ReportHuyNqid"
+                                asp-items="ViewBag.ReportHuyNqid"
+                                class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none"></select>
+                    </div>
+
+                    <!-- AssignedDate -->
+                    <div>
+                        <label asp-for="AssignedDate" class="block font-medium text-gray-700"></label>
+                        <input asp-for="AssignedDate"
+                               class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                        <span asp-validation-for="AssignedDate" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div>
+                        <label asp-for="Status" class="block font-medium text-gray-700"></label>
+                        <select asp-for="Status" class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                            <option value="Assigned">Assigned</option>
+                            <option value="OnTheWay">On The Way</option>
+                            <option value="Collected">Collected</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <!-- ArrivalTime -->
+                    <div>
+                        <label asp-for="ArrivalTime" class="block font-medium text-gray-700"></label>
+                        <input asp-for="ArrivalTime"
+                               class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                        <span asp-validation-for="ArrivalTime" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <!-- CompletionTime -->
+                    <div>
+                        <label asp-for="CompletionTime" class="block font-medium text-gray-700"></label>
+                        <input asp-for="CompletionTime"
+                               class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                        <span asp-validation-for="CompletionTime" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <!-- CollectedWeight -->
+                    <div>
+                        <label asp-for="CollectedWeight" class="block font-medium text-gray-700"></label>
+                        <!-- Wrapper input + suffix -->
+                        <div class="mt-1 w-full border rounded-lg px-3 py-2 flex items-center focus-within:ring-2 focus-within:ring-blue-400 bg-white">
+                            <input asp-for="CollectedWeight" type="number" class="flex-1 focus:outline-none" step="0.1" />
+                            <span class="text-gray-400 ml-2 select-none">kg</span>
+                        </div>
+                        <span asp-validation-for="CollectedWeight" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <!-- ProofImageUrl -->
+                    <div>
+                        <label asp-for="ProofImageUrl" class="block font-medium text-gray-700"></label>
+                        <input asp-for="ProofImageUrl"
+                               class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                        <span asp-validation-for="ProofImageUrl" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <!-- ETA -->
+                    <div>
+                        <label asp-for="EstimatedArrivalTime" class="block font-medium text-gray-700"></label>
+                        <input asp-for="EstimatedArrivalTime"
+                               class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                        <span asp-validation-for="EstimatedArrivalTime" class="text-red-600 text-sm"></span>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="md:col-span-2">
+                        <label asp-for="Notes" class="block font-medium text-gray-700"></label>
+                        <input asp-for="Notes"
+                               class="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+                        <span asp-validation-for="Notes" class="text-red-600 text-sm"></span>
+                    </div>
+
+                </div>
+
+                <!-- Submit -->
+                <div class="flex items-center justify-end space-x-4 pt-4">
+
+                    <a asp-action="Index"
+                       class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        Back
+                    </a>
+
+                    <button type="submit"
+                            class="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+                        Create
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

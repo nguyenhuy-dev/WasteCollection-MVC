@@ -9,6 +9,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICollectorAssignmentsHuyNqService, CollectorAssignmentsHuyNqService>();
 builder.Services.AddScoped<ReportsHuyNqService>();
 
+var assemblyService = typeof(IAssemblyReference).Assembly;
+
+// Add AutoMapper profiles
+builder.Services.AddAutoMapper(cfg => { }, assemblyService);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

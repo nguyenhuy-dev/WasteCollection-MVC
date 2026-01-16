@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
 using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.Services.HuyNQ;
+using WasteCollection.Services.HuyNQ.DTOs;
 
 namespace WasteCollection.MVCWebApp.HuyNQ.Controllers;
 
@@ -71,7 +71,7 @@ public class CollectorAssignmentsHuyNqsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("AssignmentId,ReportHuyNqid,AssignedDate,Status,ArrivalTime,CompletionTime,CollectedWeight,ProofImageUrl,EstimatedArrivalTime,Notes")] CollectorAssignmentsHuyNq collectorAssignmentsHuyNq)
+    public async Task<IActionResult> Create([Bind("ReportHuyNqid,AssignedDate,Status,ArrivalTime,CompletionTime,CollectedWeight,ProofImageUrl,EstimatedArrivalTime,Notes")] CollectorAssignmentsHuyNqCreatedDto request)
     {
         if (ModelState.IsValid)
         {
@@ -79,7 +79,7 @@ public class CollectorAssignmentsHuyNqsController : Controller
             //_context.Add(collectorAssignmentsHuyNq);
             //await _context.SaveChangesAsync();
 
-            var result = await _collectorAsmService.CreateAsync(collectorAssignmentsHuyNq);
+            var result = await _collectorAsmService.CreateAsync(request);
 
             if (result > 0)
                 return RedirectToAction(nameof(Index));
@@ -87,8 +87,8 @@ public class CollectorAssignmentsHuyNqsController : Controller
 
         var reports = await _reportService.GetAllAsync();
 
-        ViewData["ReportHuyNqid"] = new SelectList(reports, "ReportId", "Address", collectorAssignmentsHuyNq.ReportHuyNqid);
-        return View(collectorAssignmentsHuyNq);
+        ViewData["ReportHuyNqid"] = new SelectList(reports, "ReportId", "Address", request.ReportHuyNqid);
+        return View(request);
     }
 
     /*

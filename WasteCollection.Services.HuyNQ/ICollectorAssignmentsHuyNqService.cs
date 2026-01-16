@@ -1,5 +1,6 @@
 ﻿using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.Repositories.HuyNQ.Models;
+using WasteCollection.Services.HuyNQ.DTOs;
 
 namespace WasteCollection.Services.HuyNQ;
 
@@ -11,7 +12,7 @@ public interface ICollectorAssignmentsHuyNqService
 
     Task<List<CollectorAssignmentsHuyNq>> SearchAsync(CollectorAssignmentsHuyNqSearchOptions options);
 
-    Task<int> CreateAsync(CollectorAssignmentsHuyNq asm);
+    Task<int> CreateAsync(CollectorAssignmentsHuyNqCreatedDto request);
 
     Task<int> UpdateAsync(CollectorAssignmentsHuyNq asm);
 

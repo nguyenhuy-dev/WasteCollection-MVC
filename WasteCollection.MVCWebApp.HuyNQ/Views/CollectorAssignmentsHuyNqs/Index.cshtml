@@ -9,24 +9,31 @@
 }
 
 <div class="p-6">
-    <div class="bg-white rounded-2xl shadow-xl border border-blue-300">
-        <div class="px-6 py-4 border-b">
-            <h1 class="text-2xl font-bold text-blue-700">Collector Assignments</h1>
+    <div class="bg-white rounded-2xl shadow-xl border border-green-300">
+        <div class="px-6 py-4 border-b border-green-200">
+            <h1 class="text-2xl font-bold text-green-700">Collector Assignments</h1>
         </div>
 
         <div class="p-6">
 
-            <div class="flex justify-end mb-4">
+            <!-- Create button -->
+            <div class="flex justify-end mb-4 space-x-4">
+                <a asp-controller="Home" asp-action="Index"
+                   class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">
+                    Back to Home
+                </a>
+
                 <a asp-action="Create"
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
-                    Create New
+                   class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition">
+                    + Create New
                 </a>
             </div>
 
+            <!-- Table -->
             <div class="overflow-x-auto">
                 <table class="min-w-full text-sm text-gray-800 border-collapse">
                     <thead>
-                        <tr class="bg-blue-50 text-left font-semibold">
+                        <tr class="bg-green-50 text-left font-semibold border-y border-green-200">
                             <th class="p-3">Assigned</th>
                             <th class="p-3">Status</th>
                             <th class="p-3">Arrival</th>
@@ -41,20 +48,26 @@
                     </thead>
 
                     <tbody>
+
                         @foreach (var item in Model)
                         {
-                            var statusClass =
-                            item.Status == "Completed" ? "bg-green-600" :
-                            item.Status == "InProgress" ? "bg-blue-600" :
-                            item.Status == "Pending" ? "bg-orange-500" :
-                            item.Status == "Cancelled" ? "bg-red-600" :
-                            "bg-gray-600";
+                            var statusColor = item.Status switch
+                            {
+                                "Assigned" => "bg-blue-400",
+                                "InProgress" => "bg-blue-600",
+                                "OnTheWay" => "bg-blue-600",
+                                "Pending" => "bg-yellow-500",
+                                "Collected" => "bg-green-600",
+                                "Completed" => "bg-green-600",
+                                "Cancelled" => "bg-red-600",
+                                _ => "bg-gray-600"
+                            };
 
-                            <tr class="border-t hover:bg-gray-50">
+                            <tr class="border-b hover:bg-gray-50 transition">
                                 <td class="p-3">@item.AssignedDate</td>
 
                                 <td class="p-3">
-                                    <span class="px-2 py-1 text-white rounded-md text-xs @statusClass">
+                                    <span class="px-2 py-1 text-white rounded-md text-xs @statusColor">
                                         @item.Status
                                     </span>
                                 </td>
@@ -70,63 +83,70 @@
                                     @if (!string.IsNullOrEmpty(item.ProofImageUrl))
                                     {
                                         <a href="@item.ProofImageUrl" target="_blank"
-                                           class="text-blue-600 underline">View</a>
+                                           class="text-green-700 underline hover:text-green-900">
+                                            View
+                                        </a>
                                     }
                                     else
                                     {
-
                                         <span>-</span>
                                     }
                                 </td>
 
                                 <td class="p-3">@item.EstimatedArrivalTime</td>
+
                                 <td class="p-3 max-w-[160px] truncate">@item.Notes</td>
+
                                 <td class="p-3">@item.ReportHuyNq?.Address</td>
 
                                 <td class="p-3 text-right">
 
-                                    <!-- Container group -->
-                                    <div class="relative inline-block text-left group">
+                                    <!-- Action container -->
+                                    <div class="relative inline-block text-left">
 
-                                        <!-- 3-chấm -->
-                                        <button class="p-2 rounded-md hover:bg-gray-100">
+                                        <!-- 3-dots button -->
+                                        <button type="button"
+                                                class="p-2 rounded-md hover:bg-gray-100"
+                                                onclick="toggleDropdown('@item.AssignmentId')">
+
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                  viewBox="0 0 16 16" class="w-5 h-5 text-gray-700">
                                                 <path d="M3 9.5a1.5 1.5 0 1 1 0-3
-                                 1.5 1.5 0 0 1 0 3zm5 0a1.5
-                                 1.5 0 1 1 0-3 1.5 1.5 0 0
-                                 1 0 3zm5 0a1.5 1.5 0 1 1
-                                 0-3 1.5 1.5 0 0 1 0 3z" />
+                                                         1.5 1.5 0 0 1 0 3zm5 0a1.5
+                                                         1.5 0 1 1 0-3 1.5 1.5 0 0
+                                                         1 0 3zm5 0a1.5 1.5 0 1 1
+                                                         0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
 
-                                        <!-- Dropdown menu -->
-                                        <div class="absolute right-0 top-full w-32 bg-white border shadow-lg rounded-lg
-                            hidden group-hover:block z-20">
+                                        <!-- Dropdown -->
+                                        <div id="dropdown-@item.AssignmentId"
+                                             class="absolute right-0 mt-1 w-36 bg-white border border-gray-200 shadow-lg rounded-lg hidden z-30">
 
                                             <a asp-action="Edit" asp-route-id="@item.AssignmentId"
-                                               class="block px-4 py-2 hover:bg-blue-50 text-blue-700">
+                                               class="block px-4 py-2 hover:bg-green-50 text-green-700 transition">
                                                 Edit
                                             </a>
 
                                             <a asp-action="Details" asp-route-id="@item.AssignmentId"
-                                               class="block px-4 py-2 hover:bg-gray-100">
+                                               class="block px-4 py-2 hover:bg-gray-100 transition">
                                                 Details
                                             </a>
 
                                             <a asp-action="Delete" asp-route-id="@item.AssignmentId"
-                                               class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                               class="block px-4 py-2 text-red-600 hover:bg-red-50 transition">
                                                 Delete
                                             </a>
 
                                         </div>
+
                                     </div>
 
                                 </td>
 
-
                             </tr>
                         }
+
                     </tbody>
 
                 </table>
@@ -135,3 +155,25 @@
         </div>
     </div>
 </div>
+
+<!-- Script to control dropdown -->
+<script>
+    function toggleDropdown(id) {
+
+        // Close all dropdowns
+        document.querySelectorAll('[id^="dropdown-"]').forEach(e => {
+            if (e.id !== "dropdown-" + id) e.classList.add("hidden");
+        });
+
+        // Toggle current dropdown
+        const dropdown = document.getElementById("dropdown-" + id);
+        dropdown.classList.toggle("hidden");
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+        if (!event.target.closest(".relative")) {
+            document.querySelectorAll('[id^="dropdown-"]').forEach(e => e.classList.add("hidden"));
+        }
+    });
+</script>
