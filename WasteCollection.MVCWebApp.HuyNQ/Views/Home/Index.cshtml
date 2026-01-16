@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Waste Collection & Recycling Platform";
+}
+
+<div class="container mt-4">
+
+    <!-- HERO SECTION -->
+    <div class="p-5 mb-4 text-white rounded" style="background: linear-gradient(135deg,#0f8a43,#4ac985);">
+        <div class="container py-5">
+            <h1 class="display-4 fw-bold">Waste Collection & Recycling</h1>
+            <p class="lead">A community-driven platform that connects citizens, collectors, and recycling enterprises.</p>
+            <a class="btn btn-light btn-lg rounded-pill" href="/Collections">Start Recycling</a>
+        </div>
+    </div>
+
+    <!-- STATS SECTION -->
+    <div class="row text-center mb-5">
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded shadow-sm">
+                <h2 class="text-success fw-bold">12,450+</h2>
+                <p>Kg of Waste Recycled</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded shadow-sm">
+                <h2 class="text-primary fw-bold">420</h2>
+                <p>Registered Citizens</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-light rounded shadow-sm">
+                <h2 class="text-warning fw-bold">52</h2>
+                <p>Recycling Enterprises</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WASTE CATEGORIES -->
+    <h3 class="fw-bold mb-3">Waste Categories</h3>
+
+    @{
+        var wasteCategories = new List<dynamic> {
+        new { Name = "Plastic", Description="Bottles, packaging, containers", Color="#4ac985" },
+        new { Name = "Paper", Description="Newspapers, boxes, used paper", Color="#3a7bd5" },
+        new { Name = "Organic", Description="Food waste, leaves", Color="#c7922f" },
+        new { Name = "Metal", Description="Cans, iron, aluminum", Color="#888" }
+        };
+    }
+
+    <div class="row mb-5">
+        @foreach (var w in wasteCategories)
+        {
+            <div class="col-md-3 mb-3">
+                <div class="p-3 rounded text-white shadow-sm" style="background:@w.Color;">
+                    <h5 class="fw-bold">@w.Name</h5>
+                    <p>@w.Description</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- COLLECTION POINTS -->
+    <h3 class="fw-bold mb-3">Nearby Collection Points</h3>
+
+    @{
+        var collectionPoints = new List<dynamic> {
+        new { Name="District 1 Collection Center", Address="123 Nguyen Hue", Hours="8:00 - 17:00", Type="Plastic / Paper" },
+        new { Name="Thu Duc Recycle Hub", Address="45 Vo Van Ngan", Hours="7:00 - 18:00", Type="Organic / Metal" },
+        new { Name="Binh Thanh Green Station", Address="56 Dien Bien Phu", Hours="8:00 - 20:00", Type="Plastic / Metal" }
+        };
+    }
+
+    <div class="row">
+        @foreach (var p in collectionPoints)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@p.Name</h5>
+                        <p class="card-text">
+                            <strong>Address:</strong> @p.Address <br />
+                            <strong>Opening Hours:</strong> @p.Hours <br />
+                            <strong>Accepted Waste:</strong> @p.Type
+                        </p>
+                        <a class="btn btn-sm btn-success rounded-pill">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

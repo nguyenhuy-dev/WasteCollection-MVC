@@ -1,0 +1,137 @@
+﻿@model IEnumerable<WasteCollection.Entities.HuyNQ.Models.CollectorAssignmentsHuyNq>
+
+@{
+    ViewData["Title"] = "Collector Assignments";
+}
+
+@section Styles {
+    <script src="https://cdn.tailwindcss.com"></script>
+}
+
+<div class="p-6">
+    <div class="bg-white rounded-2xl shadow-xl border border-blue-300">
+        <div class="px-6 py-4 border-b">
+            <h1 class="text-2xl font-bold text-blue-700">Collector Assignments</h1>
+        </div>
+
+        <div class="p-6">
+
+            <div class="flex justify-end mb-4">
+                <a asp-action="Create"
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium">
+                    Create New
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-gray-800 border-collapse">
+                    <thead>
+                        <tr class="bg-blue-50 text-left font-semibold">
+                            <th class="p-3">Assigned</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">Arrival</th>
+                            <th class="p-3">Done</th>
+                            <th class="p-3">Weight</th>
+                            <th class="p-3">Image</th>
+                            <th class="p-3">ETA</th>
+                            <th class="p-3">Notes</th>
+                            <th class="p-3">Address</th>
+                            <th class="p-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var statusClass =
+                            item.Status == "Completed" ? "bg-green-600" :
+                            item.Status == "InProgress" ? "bg-blue-600" :
+                            item.Status == "Pending" ? "bg-orange-500" :
+                            item.Status == "Cancelled" ? "bg-red-600" :
+                            "bg-gray-600";
+
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="p-3">@item.AssignedDate</td>
+
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-white rounded-md text-xs @statusClass">
+                                        @item.Status
+                                    </span>
+                                </td>
+
+                                <td class="p-3">@item.ArrivalTime</td>
+                                <td class="p-3">@item.CompletionTime</td>
+
+                                <td class="p-3">
+                                    @(item.CollectedWeight != null ? item.CollectedWeight + " kg" : "-")
+                                </td>
+
+                                <td class="p-3">
+                                    @if (!string.IsNullOrEmpty(item.ProofImageUrl))
+                                    {
+                                        <a href="@item.ProofImageUrl" target="_blank"
+                                           class="text-blue-600 underline">View</a>
+                                    }
+                                    else
+                                    {
+
+                                        <span>-</span>
+                                    }
+                                </td>
+
+                                <td class="p-3">@item.EstimatedArrivalTime</td>
+                                <td class="p-3 max-w-[160px] truncate">@item.Notes</td>
+                                <td class="p-3">@item.ReportHuyNq?.Address</td>
+
+                                <td class="p-3 text-right">
+
+                                    <!-- Container group -->
+                                    <div class="relative inline-block text-left group">
+
+                                        <!-- 3-chấm -->
+                                        <button class="p-2 rounded-md hover:bg-gray-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                 viewBox="0 0 16 16" class="w-5 h-5 text-gray-700">
+                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3
+                                 1.5 1.5 0 0 1 0 3zm5 0a1.5
+                                 1.5 0 1 1 0-3 1.5 1.5 0 0
+                                 1 0 3zm5 0a1.5 1.5 0 1 1
+                                 0-3 1.5 1.5 0 0 1 0 3z" />
+                                            </svg>
+                                        </button>
+
+                                        <!-- Dropdown menu -->
+                                        <div class="absolute right-0 top-full w-32 bg-white border shadow-lg rounded-lg
+                            hidden group-hover:block z-20">
+
+                                            <a asp-action="Edit" asp-route-id="@item.AssignmentId"
+                                               class="block px-4 py-2 hover:bg-blue-50 text-blue-700">
+                                                Edit
+                                            </a>
+
+                                            <a asp-action="Details" asp-route-id="@item.AssignmentId"
+                                               class="block px-4 py-2 hover:bg-gray-100">
+                                                Details
+                                            </a>
+
+                                            <a asp-action="Delete" asp-route-id="@item.AssignmentId"
+                                               class="block px-4 py-2 text-red-600 hover:bg-red-50">
+                                                Delete
+                                            </a>
+
+                                        </div>
+                                    </div>
+
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
