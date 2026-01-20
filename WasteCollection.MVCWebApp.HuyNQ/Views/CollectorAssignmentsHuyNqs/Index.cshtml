@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WasteCollection.Entities.HuyNQ.Models.CollectorAssignmentsHuyNq>
+﻿@model WasteCollection.MVCWebApp.HuyNQ.ViewModels.CollectorAssignmentsHuyNqPageViewModel;
 
 @{
     ViewData["Title"] = "Collector Assignments";
@@ -10,24 +10,61 @@
 
 <div class="p-6">
     <div class="bg-white rounded-2xl shadow-xl border border-green-300">
-        <div class="px-6 py-4 border-b border-green-200">
+        <div class="px-6 py-4 border-b border-green-200 flex items-center justify-between">
             <h1 class="text-2xl font-bold text-green-700">Collector Assignments</h1>
+
+            <a asp-controller="Home" asp-action="Index" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">← Back Home</a>
         </div>
 
         <div class="p-6">
 
-            <!-- Create button -->
-            <div class="flex justify-end mb-4 space-x-4">
-                <a asp-controller="Home" asp-action="Index"
-                   class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">
-                    Back to Home
-                </a>
+            <form asp-action="Index" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
 
-                <a asp-action="Create"
-                   class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition">
-                    + Create New
-                </a>
-            </div>
+                <!-- Status -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Status</label>
+                    <select id="Status" name="Status"
+                            class="w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-green-500 focus:outline-none">
+                        <option value="" selected disabled>-- Select Status --</option>
+                        <option value="Assigned">Assigned</option>
+                        <option value="OnTheWay">On The Way</option>
+                        <option value="Collected">Collected</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <!-- Collected Weight -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Collected Weight</label>
+                    <div class="flex items-center border rounded-lg bg-white px-3 py-2 focus-within:ring-2 focus-within:ring-green-500">
+                        <input type="number" id="CollectedWeight" name="CollectedWeight"
+                               step="0.1"
+                               class="w-full focus:outline-none"
+                               placeholder="0.0" />
+                        <span class="text-gray-500 ml-2">kg</span>
+                    </div>
+                </div>
+
+                <!-- Assigned Date -->
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Assigned Date</label>
+                    <input type="date" id="AssignedDate" name="AssignedDate"
+                           class="w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-green-500 focus:outline-none" />
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex items-end gap-3">
+                    <input type="submit"
+                           value="Search"
+                           class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer" />
+
+                    <a asp-action="Create"
+                       class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Create
+                    </a>
+                </div>
+
+            </form>
 
             <!-- Table -->
             <div class="overflow-x-auto">
@@ -42,14 +79,14 @@
                             <th class="p-3">Image</th>
                             <th class="p-3">ETA</th>
                             <th class="p-3">Notes</th>
-                            <th class="p-3">Address</th>
+                            <th class="p-3">Report Address</th>
                             <th class="p-3 text-right">Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
 
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.CollectorAssignmentsHuyNqGetAllDtos)
                         {
                             var statusColor = item.Status switch
                             {
@@ -97,7 +134,7 @@
 
                                 <td class="p-3 max-w-[160px] truncate">@item.Notes</td>
 
-                                <td class="p-3">@item.ReportHuyNq?.Address</td>
+                                <td class="p-3">@item.Address</td>
 
                                 <td class="p-3 text-right">
 
@@ -155,6 +192,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- Script to control dropdown -->
 <script>

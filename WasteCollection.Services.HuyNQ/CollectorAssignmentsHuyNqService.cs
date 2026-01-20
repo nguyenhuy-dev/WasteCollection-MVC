@@ -50,11 +50,21 @@ public class CollectorAssignmentsHuyNqService : ICollectorAssignmentsHuyNqServic
         } 
     }
 
-    public async Task<List<CollectorAssignmentsHuyNq>> GetAllAsync()
+    public async Task<List<CollectorAssignmentsHuyNqGetAllDto>> GetAllAsync()
     {
         try
         {
-            return await _collectorAsmRepository.GetAllAsync();
+            var asms = await _collectorAsmRepository.GetAllAsync();
+            var asmDtos = new List<CollectorAssignmentsHuyNqGetAllDto>();
+
+            asms.ForEach(asm =>
+            {
+                var asmDto = _mapper.Map<CollectorAssignmentsHuyNq, CollectorAssignmentsHuyNqGetAllDto>(asm);
+                asmDto.Address = asm.ReportHuyNq.Address;
+                asmDtos.Add(asmDto);
+            });
+
+            return asmDtos;
         } 
         catch (Exception)
         {
@@ -66,7 +76,7 @@ public class CollectorAssignmentsHuyNqService : ICollectorAssignmentsHuyNqServic
     {
         try
         {
-            var asm = await _collectorAsmRepository.GetByIdAsync(id) 
+            var asm = await _collectorAsmRepository.GetById(id) 
                 ?? throw new NotFoundException("Collector Assignment not found.");
             return asm;
         } 
@@ -76,11 +86,21 @@ public class CollectorAssignmentsHuyNqService : ICollectorAssignmentsHuyNqServic
         }
     }
 
-    public async Task<List<CollectorAssignmentsHuyNq>> SearchAsync(CollectorAssignmentsHuyNqSearchOptions options)
+    public async Task<List<CollectorAssignmentsHuyNqGetAllDto>> SearchAsync(CollectorAssignmentsHuyNqSearchOptions options)
     {
         try
         {
-            return await _collectorAsmRepository.SearchAsync(options);
+            var asms = await _collectorAsmRepository.SearchAsync(options);
+
+            var asmDtos = asms.Select(asm =>
+            {
+                var asmDto = _mapper.Map<CollectorAssignmentsHuyNq, CollectorAssignmentsHuyNqGetAllDto>(asm);
+                asmDto.Address = asm.ReportHuyNq.Address;
+
+                return asmDto;
+            });
+
+            return [.. asmDtos];
         }
         catch (Exception)
         {

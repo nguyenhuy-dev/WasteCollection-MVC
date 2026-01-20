@@ -6,11 +6,11 @@ namespace WasteCollection.Services.HuyNQ;
 
 public interface ICollectorAssignmentsHuyNqService
 {
-    Task<List<CollectorAssignmentsHuyNq>> GetAllAsync();
+    Task<List<CollectorAssignmentsHuyNqGetAllDto>> GetAllAsync();
 
     Task<CollectorAssignmentsHuyNq> GetByIdAsync(Guid id);
 
-    Task<List<CollectorAssignmentsHuyNq>> SearchAsync(CollectorAssignmentsHuyNqSearchOptions options);
+    Task<List<CollectorAssignmentsHuyNqGetAllDto>> SearchAsync(CollectorAssignmentsHuyNqSearchOptions options);
 
     Task<int> CreateAsync(CollectorAssignmentsHuyNqCreatedDto request);
 

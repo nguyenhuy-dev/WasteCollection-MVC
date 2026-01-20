@@ -9,5 +9,7 @@ public class CollectorAssignmentsHuyNqProfile : Profile
     public CollectorAssignmentsHuyNqProfile()
     {
         CreateMap<CollectorAssignmentsHuyNqCreatedDto, CollectorAssignmentsHuyNq>(MemberList.None);
+
+        CreateMap<CollectorAssignmentsHuyNq, CollectorAssignmentsHuyNqGetAllDto>(MemberList.None);
     }
 }

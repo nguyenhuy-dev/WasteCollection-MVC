@@ -4,71 +4,105 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@section Styles {
+    <script src="https://cdn.tailwindcss.com"></script>
+}
 
-<h4>CollectorAssignmentsHuyNq</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-10">
+    <div class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-8 border border-green-200">
+
+        <h1 class="text-3xl font-bold text-green-700 mb-2">Edit Assignment</h1>
+        <p class="text-gray-600 mb-6">Update the information below</p>
+
+        <form asp-action="Edit" class="space-y-5">
             <input type="hidden" asp-for="AssignmentId" />
-            <div class="form-group">
-                <label asp-for="ReportHuyNqid" class="control-label"></label>
-                <select asp-for="ReportHuyNqid" class="form-control" asp-items="ViewBag.ReportHuyNqid"></select>
-                <span asp-validation-for="ReportHuyNqid" class="text-danger"></span>
+
+            <!-- Report -->
+            <div>
+                <label asp-for="ReportHuyNqid" class="block font-medium text-gray-700">Report Address</label>
+                <select asp-for="ReportHuyNqid" asp-items="ViewBag.ReportHuyNqid"
+                        class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500">
+                </select>
+                <span asp-validation-for="ReportHuyNqid" class="text-red-500 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AssignedDate" class="control-label"></label>
-                <input asp-for="AssignedDate" class="form-control" />
-                <span asp-validation-for="AssignedDate" class="text-danger"></span>
+
+            <!-- Status -->
+            <div>
+                <label asp-for="Status" class="block font-medium text-gray-700"></label>
+                <input asp-for="Status"
+                       class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500" />
+                <span asp-validation-for="Status" class="text-red-500 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+
+            <!-- ArrivalTime -->
+            <div>
+                <label asp-for="ArrivalTime" class="block font-medium text-gray-700"></label>
+                <input asp-for="ArrivalTime"
+                       class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500" />
+                <span asp-validation-for="ArrivalTime" class="text-red-500 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ArrivalTime" class="control-label"></label>
-                <input asp-for="ArrivalTime" class="form-control" />
-                <span asp-validation-for="ArrivalTime" class="text-danger"></span>
+
+            <!-- CompletionTime -->
+            <div>
+                <label asp-for="CompletionTime" class="block font-medium text-gray-700"></label>
+                <input asp-for="CompletionTime"
+                       class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500" />
+                <span asp-validation-for="CompletionTime" class="text-red-500 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompletionTime" class="control-label"></label>
-                <input asp-for="CompletionTime" class="form-control" />
-                <span asp-validation-for="CompletionTime" class="text-danger"></span>
+
+            <!-- CollectedWeight -->
+            <div>
+                <label asp-for="CollectedWeight" class="block font-medium text-gray-700"></label>
+                <!-- Wrapper input + suffix -->
+                <div class="mt-1 w-full border rounded-lg px-3 py-2 flex items-center focus-within:ring-2 focus-within:ring-blue-400 bg-white">
+                    <input asp-for="CollectedWeight" type="number" class="flex-1 focus:outline-none" step="0.1" />
+                    <span class="text-gray-400 ml-2 select-none">kg</span>
+                </div>
+                <span asp-validation-for="CollectedWeight" class="text-red-600 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CollectedWeight" class="control-label"></label>
-                <input asp-for="CollectedWeight" class="form-control" />
-                <span asp-validation-for="CollectedWeight" class="text-danger"></span>
+
+            <!-- ProofImageUrl -->
+            <div>
+                <label asp-for="ProofImageUrl" class="block font-medium text-gray-700"></label>
+                <input asp-for="ProofImageUrl"
+                       class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500" />
+                <span asp-validation-for="ProofImageUrl" class="text-red-500 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ProofImageUrl" class="control-label"></label>
-                <input asp-for="ProofImageUrl" class="form-control" />
-                <span asp-validation-for="ProofImageUrl" class="text-danger"></span>
+
+            <!-- EstimatedArrivalTime -->
+            <div>
+                <label asp-for="EstimatedArrivalTime" class="block font-medium text-gray-700"></label>
+                <input asp-for="EstimatedArrivalTime"
+                       class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500" />
+                <span asp-validation-for="EstimatedArrivalTime" class="text-red-500 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EstimatedArrivalTime" class="control-label"></label>
-                <input asp-for="EstimatedArrivalTime" class="form-control" />
-                <span asp-validation-for="EstimatedArrivalTime" class="text-danger"></span>
+
+            <!-- Notes -->
+            <div>
+                <label asp-for="Notes" class="block font-medium text-gray-700"></label>
+                <input asp-for="Notes"
+                       class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:border-green-500" />
+                <span asp-validation-for="Notes" class="text-red-500 text-sm"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Buttons -->
+            <div class="flex justify-between pt-4">
+                <a asp-action="Index"
+                   class="px-6 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 text-lg transition">
+                    Back to List
+                </a>
+
+                <button type="submit"
+                        class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                    Save
+                </button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

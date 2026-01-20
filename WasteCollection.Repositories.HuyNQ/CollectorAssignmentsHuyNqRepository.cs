@@ -34,7 +34,7 @@ public class CollectorAssignmentsHuyNqRepository : GenericRepository<CollectorAs
     {
         var status = options.Status ?? string.Empty;
         var collectedWeight = options.CollectedWeight;
-        var reportDate = options.ReportDate;
+        var assignedDate = options.AssignedDate;
 
         var items = await _context.CollectorAssignmentsHuyNqs
             .Include(c => c.ReportHuyNq)
@@ -42,12 +42,11 @@ public class CollectorAssignmentsHuyNqRepository : GenericRepository<CollectorAs
                 (c.Status.Contains(status) || string.IsNullOrEmpty(status)) &&
                 (c.CollectedWeight == collectedWeight || collectedWeight == 0 || collectedWeight == null) &&
                 (
+                    assignedDate == null ||
                     (
-                        reportDate != null &&
-                        c.ReportHuyNq.ReportDate != null &&
-                        c.ReportHuyNq.ReportDate.Value.Date == reportDate.Value.Date
-                    ) ||
-                    reportDate == null
+                        c.AssignedDate.HasValue &&
+                        c.AssignedDate.Value.Date == assignedDate.Value.Date
+                    )
                 )
             )
             .ToListAsync();

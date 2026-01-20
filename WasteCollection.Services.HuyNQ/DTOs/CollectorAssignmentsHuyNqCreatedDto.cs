@@ -6,7 +6,7 @@ public class CollectorAssignmentsHuyNqCreatedDto
 
     public Guid ReportHuyNqid { get; set; }
 
-    public DateTime? AssignedDate { get; set; }
+    public DateTime? AssignedDate { get; set; } = DateTime.Now;
 
     public string Status { get; set; } = default!;
 

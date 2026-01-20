@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WasteCollection.Entities.HuyNQ.Models;
+using WasteCollection.MVCWebApp.HuyNQ.ViewModels;
+using WasteCollection.Repositories.HuyNQ.Models;
 using WasteCollection.Services.HuyNQ;
 using WasteCollection.Services.HuyNQ.DTOs;
 
@@ -25,6 +27,8 @@ public class CollectorAssignmentsHuyNqsController : Controller
     } 
     
     // GET: CollectorAssignmentsHuyNqs
+
+    /*
     public async Task<IActionResult> Index()
     {
         //var wasteCollectionDbContext = _context.CollectorAssignmentsHuyNqs.Include(c => c.ReportHuyNq);
@@ -34,14 +38,29 @@ public class CollectorAssignmentsHuyNqsController : Controller
 
         return View(asms);
     }
+    */
+
+    public async Task<IActionResult> Index(CollectorAssignmentsHuyNqSearchOptions option)
+    {
+        //var wasteCollectionDbContext = _context.CollectorAssignmentsHuyNqs.Include(c => c.ReportHuyNq);
+        //return View(await wasteCollectionDbContext.ToListAsync());
+
+        var asms = await _collectorAsmService.SearchAsync(option);
+
+        var vm = new CollectorAssignmentsHuyNqPageViewModel
+        {
+            CollectorAssignmentsHuyNqGetAllDtos = asms,
+            Option = option
+        };
+
+        return View(vm);
+    }
 
     // GET: CollectorAssignmentsHuyNqs/Details/5
     public async Task<IActionResult> Details(Guid? id)
     {
         if (id == null)
-        {
             return NotFound();
-        }
 
         //var collectorAssignmentsHuyNq = await _context.CollectorAssignmentsHuyNqs
         //    .Include(c => c.ReportHuyNq)
@@ -71,7 +90,7 @@ public class CollectorAssignmentsHuyNqsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ReportHuyNqid,AssignedDate,Status,ArrivalTime,CompletionTime,CollectedWeight,ProofImageUrl,EstimatedArrivalTime,Notes")] CollectorAssignmentsHuyNqCreatedDto request)
+    public async Task<IActionResult> Create([Bind("ReportHuyNqid,Status,ArrivalTime,CompletionTime,CollectedWeight,ProofImageUrl,EstimatedArrivalTime,Notes")] CollectorAssignmentsHuyNqCreatedDto request)
     {
         if (ModelState.IsValid)
         {
@@ -91,22 +110,22 @@ public class CollectorAssignmentsHuyNqsController : Controller
         return View(request);
     }
 
-    /*
-
     // GET: CollectorAssignmentsHuyNqs/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
-        {
             return NotFound();
-        }
 
-        var collectorAssignmentsHuyNq = await _context.CollectorAssignmentsHuyNqs.FindAsync(id);
+        //var collectorAssignmentsHuyNq = await _context.CollectorAssignmentsHuyNqs.FindAsync(id);
+
+        var collectorAssignmentsHuyNq = await _collectorAsmService.GetByIdAsync(id.Value);
+
         if (collectorAssignmentsHuyNq == null)
-        {
             return NotFound();
-        }
-        ViewData["ReportHuyNqid"] = new SelectList(_context.ReportsHuyNqs, "ReportId", "ReportId", collectorAssignmentsHuyNq.ReportHuyNqid);
+
+        var reports = await _reportService.GetAllAsync();
+
+        ViewData["ReportHuyNqid"] = new SelectList(reports, "ReportId", "Address", collectorAssignmentsHuyNq.ReportHuyNqid);
         return View(collectorAssignmentsHuyNq);
     }
 
@@ -115,52 +134,65 @@ public class CollectorAssignmentsHuyNqsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(Guid id, [Bind("AssignmentId,ReportHuyNqid,AssignedDate,Status,ArrivalTime,CompletionTime,CollectedWeight,ProofImageUrl,EstimatedArrivalTime,Notes")] CollectorAssignmentsHuyNq collectorAssignmentsHuyNq)
+    public async Task<IActionResult> Edit(CollectorAssignmentsHuyNq collectorAssignmentsHuyNq)
     {
-        if (id != collectorAssignmentsHuyNq.AssignmentId)
-        {
-            return NotFound();
-        }
+        //if (id != collectorAssignmentsHuyNq.AssignmentId)
+        //{
+        //    return NotFound();
+        //}
 
         if (ModelState.IsValid)
         {
             try
             {
-                _context.Update(collectorAssignmentsHuyNq);
-                await _context.SaveChangesAsync();
+                //_context.Update(collectorAssignmentsHuyNq);
+                //await _context.SaveChangesAsync();
+
+                var result = await _collectorAsmService.UpdateAsync(collectorAssignmentsHuyNq);
+
+                if (result > 0)
+                    return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
+            //catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!CollectorAssignmentsHuyNqExists(collectorAssignmentsHuyNq.AssignmentId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                //if (!CollectorAssignmentsHuyNqExists(collectorAssignmentsHuyNq.AssignmentId))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
+                //    throw;
+                //}
+
+                throw;
             }
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
         }
-        ViewData["ReportHuyNqid"] = new SelectList(_context.ReportsHuyNqs, "ReportId", "ReportId", collectorAssignmentsHuyNq.ReportHuyNqid);
+
+        //ViewData["ReportHuyNqid"] = new SelectList(_context.ReportsHuyNqs, "ReportId", "ReportId", collectorAssignmentsHuyNq.ReportHuyNqid);
+
+        var reports = await _reportService.GetAllAsync();
+        ViewData["ReportHuyNqid"] = new SelectList(reports, "ReportId", "Address", collectorAssignmentsHuyNq.ReportHuyNqid);
+
         return View(collectorAssignmentsHuyNq);
     }
+
 
     // GET: CollectorAssignmentsHuyNqs/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
-        {
             return NotFound();
-        }
 
-        var collectorAssignmentsHuyNq = await _context.CollectorAssignmentsHuyNqs
-            .Include(c => c.ReportHuyNq)
-            .FirstOrDefaultAsync(m => m.AssignmentId == id);
+        //var collectorAssignmentsHuyNq = await _context.CollectorAssignmentsHuyNqs
+        //    .Include(c => c.ReportHuyNq)
+        //    .FirstOrDefaultAsync(m => m.AssignmentId == id);
+
+        var collectorAssignmentsHuyNq = await _collectorAsmService.GetByIdAsync(id.Value);
+
         if (collectorAssignmentsHuyNq == null)
-        {
             return NotFound();
-        }
 
         return View(collectorAssignmentsHuyNq);
     }
@@ -170,19 +202,24 @@ public class CollectorAssignmentsHuyNqsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
-        var collectorAssignmentsHuyNq = await _context.CollectorAssignmentsHuyNqs.FindAsync(id);
-        if (collectorAssignmentsHuyNq != null)
-        {
-            _context.CollectorAssignmentsHuyNqs.Remove(collectorAssignmentsHuyNq);
-        }
+        //var collectorAssignmentsHuyNq = await _context.CollectorAssignmentsHuyNqs.FindAsync(id);
+        //if (collectorAssignmentsHuyNq != null)
+        //{
+        //    _context.CollectorAssignmentsHuyNqs.Remove(collectorAssignmentsHuyNq);
+        //}
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        //await _context.SaveChangesAsync();
+
+        var result = await _collectorAsmService.DeleteAsync(id);
+        
+        if (result)
+            return RedirectToAction(nameof(Index));
+
+        return RedirectToAction(nameof(Delete), new { id });
     }
 
-    private bool CollectorAssignmentsHuyNqExists(Guid id)
-    {
-        return _context.CollectorAssignmentsHuyNqs.Any(e => e.AssignmentId == id);
-    }
-    */
+    //private bool CollectorAssignmentsHuyNqExists(Guid id)
+    //{
+    //    return _context.CollectorAssignmentsHuyNqs.Any(e => e.AssignmentId == id);
+    //}
 }
