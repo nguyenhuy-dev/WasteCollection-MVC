@@ -46,6 +46,31 @@
                             </a>
                         </li>
 
+                        <!-- LOGIN BUTTON -->
+                        @if (User.Identity != null && !User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item ms-3">
+                                <a asp-controller="Auth"
+                                   asp-action="Login"
+                                   class="btn px-4 py-1 fw-semibold"
+                                   style="background:linear-gradient(135deg,#1b8a4f,#37b26c); color:white; border-radius:50px;">
+                                    Login
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- LOGOUT BUTTON -->
+                            <li class="nav-item ms-3">
+                                <form asp-controller="Auth" asp-action="Logout" method="post">
+                                    <button type="submit"
+                                            class="btn px-4 py-1 fw-semibold"
+                                            style="background:white; color:#1b8a4f; border:2px solid #37b26c; border-radius:50px;">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
 
@@ -87,6 +112,14 @@
             .nav-hover.active::after {
                 width: 100%;
             }
+    </style>
+
+    <style>
+        .btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            transition: .2s ease;
+        }
     </style>
 
 

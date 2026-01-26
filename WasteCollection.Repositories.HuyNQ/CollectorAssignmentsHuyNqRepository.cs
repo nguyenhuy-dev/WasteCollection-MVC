@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.Repositories.HuyNQ.Base;
-using WasteCollection.Repositories.HuyNQ.DBContext;
 using WasteCollection.Repositories.HuyNQ.Models;
 
 namespace WasteCollection.Repositories.HuyNQ;

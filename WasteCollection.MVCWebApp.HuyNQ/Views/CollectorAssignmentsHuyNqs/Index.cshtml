@@ -6,6 +6,26 @@
 
 @section Styles {
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="~/css/jquery-pagination-lgh.css" />
+}
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/jquery-pagination-lgh.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.pagination-box').pagination({
+                
+                pageShow: 5,
+                clickFun: function (page, limit, total, pageTotal, pageShow) {
+
+                    // Redirect with new page parameter
+                    window.location.href = '?page=' + page + '&limit=' + limit;
+                }
+            });
+        });
+    </script>
 }
 
 <div class="p-6">
@@ -187,13 +207,13 @@
                     </tbody>
 
                 </table>
+
+                <div class="pagination-box"></div>
             </div>
 
         </div>
     </div>
 </div>
-
-
 
 <!-- Script to control dropdown -->
 <script>

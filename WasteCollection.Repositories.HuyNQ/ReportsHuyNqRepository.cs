@@ -1,6 +1,5 @@
 ﻿using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.Repositories.HuyNQ.Base;
-using WasteCollection.Repositories.HuyNQ.DBContext;
 
 namespace WasteCollection.Repositories.HuyNQ;
 

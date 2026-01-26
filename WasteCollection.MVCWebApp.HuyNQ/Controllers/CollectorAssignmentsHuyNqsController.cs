@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.MVCWebApp.HuyNQ.ViewModels;
@@ -8,6 +9,7 @@ using WasteCollection.Services.HuyNQ.DTOs;
 
 namespace WasteCollection.MVCWebApp.HuyNQ.Controllers;
 
+[Authorize]
 public class CollectorAssignmentsHuyNqsController : Controller
 {
     // private readonly WasteCollectionDbContext _context;

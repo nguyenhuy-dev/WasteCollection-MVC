@@ -56,6 +56,6 @@
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,
-   "UseT4": false,
+   "UseT4": true,
    "UseT4Split": false
 }

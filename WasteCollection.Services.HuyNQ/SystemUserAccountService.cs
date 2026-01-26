@@ -1,6 +1,6 @@
 ﻿using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.Repositories.HuyNQ;
-using WasteCollection.Services.HuyNQ.Exceptions;
+using WasteCollection.Services.HuyNQ.DTOs;
 
 namespace WasteCollection.Services.HuyNQ;
 
@@ -10,6 +10,7 @@ public class SystemUserAccountService
 
     public SystemUserAccountService() => _accountRepository ??= new();
 
+    /*
     public async Task<SystemUserAccount> GetUserAccountAsync(string userName, string password)
     {
         try
@@ -19,6 +20,20 @@ public class SystemUserAccountService
 
             return user;
         } 
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+    */
+
+    public async Task<SystemUserAccount?> LoginAsync(LoginRequest request)
+    {
+        try
+        {
+            var user = await _accountRepository.GetUserWithEmailAndPasswordAsync(request.Email, request.Password);
+            return user;
+        }
         catch (Exception)
         {
             throw;
