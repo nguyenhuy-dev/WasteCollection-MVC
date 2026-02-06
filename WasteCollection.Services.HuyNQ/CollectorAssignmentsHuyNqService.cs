@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WasteCollection.Entities.HuyNQ.Models;
 using WasteCollection.Repositories.HuyNQ;
 using WasteCollection.Repositories.HuyNQ.Models;
@@ -84,6 +85,27 @@ public class CollectorAssignmentsHuyNqService : ICollectorAssignmentsHuyNqServic
         {
             throw; 
         }
+    }
+
+    public async Task<PagedResult<CollectorAssignmentsHuyNqGetAllDto>> PaginateAsync(List<CollectorAssignmentsHuyNqGetAllDto> dtos, PagedRequest pagedRequest)
+    {
+        var page = pagedRequest.Page;
+        var pageSize = pagedRequest.PageSize;
+
+        int totalItems = dtos.Count;
+
+        var items = dtos
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return new PagedResult<CollectorAssignmentsHuyNqGetAllDto>
+        {
+            Items = items,
+            TotalItems = totalItems,
+            Page = page,
+            PageSize = pageSize
+        };
     }
 
     public async Task<List<CollectorAssignmentsHuyNqGetAllDto>> SearchAsync(CollectorAssignmentsHuyNqSearchOptions options)

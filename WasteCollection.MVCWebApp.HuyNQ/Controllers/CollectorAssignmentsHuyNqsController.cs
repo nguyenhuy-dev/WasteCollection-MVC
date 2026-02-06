@@ -42,17 +42,20 @@ public class CollectorAssignmentsHuyNqsController : Controller
     }
     */
 
-    public async Task<IActionResult> Index(CollectorAssignmentsHuyNqSearchOptions option)
+    public async Task<IActionResult> Index(CollectorAssignmentsHuyNqSearchOptions option, PagedRequest pagedRequest)
     {
         //var wasteCollectionDbContext = _context.CollectorAssignmentsHuyNqs.Include(c => c.ReportHuyNq);
         //return View(await wasteCollectionDbContext.ToListAsync());
 
         var asms = await _collectorAsmService.SearchAsync(option);
 
+        var paged = await _collectorAsmService.PaginateAsync(asms, pagedRequest);
+
         var vm = new CollectorAssignmentsHuyNqPageViewModel
         {
-            CollectorAssignmentsHuyNqGetAllDtos = asms,
-            Option = option
+            PagedResult = paged,
+            Option = option,
+            PagedRequest = pagedRequest
         };
 
         return View(vm);

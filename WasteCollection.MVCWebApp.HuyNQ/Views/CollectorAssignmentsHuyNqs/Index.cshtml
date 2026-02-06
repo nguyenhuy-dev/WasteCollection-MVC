@@ -1,32 +1,32 @@
-﻿@model WasteCollection.MVCWebApp.HuyNQ.ViewModels.CollectorAssignmentsHuyNqPageViewModel;
+﻿@using System.Text.RegularExpressions
+@model WasteCollection.MVCWebApp.HuyNQ.ViewModels.CollectorAssignmentsHuyNqPageViewModel;
 
 @{
     ViewData["Title"] = "Collector Assignments";
 }
 
-@section Styles {
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="~/css/jquery-pagination-lgh.css" />
-}
-
 @section Scripts {
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/jquery-pagination-lgh.js"></script>
+    <script src="~/lib/jquery-pagination-lgh.js"></script>
 
     <script>
         $(document).ready(function () {
-            $('.pagination-box').pagination({
-                
-                pageShow: 5,
-                clickFun: function (page, limit, total, pageTotal, pageShow) {
+            let box = $('.pagination-box');
 
-                    // Redirect with new page parameter
-                    window.location.href = '?page=' + page + '&limit=' + limit;
+            box.pagination({
+                page: parseInt(box.data("page")),
+                limit: parseInt(box.data("limit")),
+                total: parseInt(box.data("total")),
+                pageShow: 3,
+                onSelect: function (p) {
+                    window.location = "/CollectorAssignmentsHuyNqs/Index?page=" + p;
                 }
             });
         });
     </script>
 }
+
 
 <div class="p-6">
     <div class="bg-white rounded-2xl shadow-xl border border-green-300">
@@ -45,11 +45,11 @@
                     <label class="block font-medium text-gray-700 mb-1">Status</label>
                     <select id="Status" name="Status"
                             class="w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-green-500 focus:outline-none">
-                        <option value="" selected disabled>-- Select Status --</option>
-                        <option value="Assigned">Assigned</option>
-                        <option value="OnTheWay">On The Way</option>
-                        <option value="Collected">Collected</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="" selected="@(string.IsNullOrEmpty(Model.Option.Status) ? "selected" : null)">-- Select Status --</option>
+                        <option value="Assigned" selected="@(Model.Option.Status == "Assigned" ? "selected" : null)">Assigned</option>
+                        <option value="OnTheWay" selected="@(Model.Option.Status == "OnTheWay" ? "selected" : null)">On The Way</option>
+                        <option value="Collected" selected="@(Model.Option.Status == "Collected" ? "selected" : null)">Collected</option>
+                        <option value="Cancelled" selected="@(Model.Option.Status == "Cancelled" ? "selected" : null)">Cancelled</option>
                     </select>
                 </div>
 
@@ -58,6 +58,7 @@
                     <label class="block font-medium text-gray-700 mb-1">Collected Weight</label>
                     <div class="flex items-center border rounded-lg bg-white px-3 py-2 focus-within:ring-2 focus-within:ring-green-500">
                         <input type="number" id="CollectedWeight" name="CollectedWeight"
+                            value="@Model.Option.CollectedWeight" 
                                step="0.1"
                                class="w-full focus:outline-none"
                                placeholder="0.0" />
@@ -69,6 +70,7 @@
                 <div>
                     <label class="block font-medium text-gray-700 mb-1">Assigned Date</label>
                     <input type="date" id="AssignedDate" name="AssignedDate"
+                        value="@(Model.Option.AssignedDate?.ToString("yyyy-MM-dd"))"
                            class="w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-green-500 focus:outline-none" />
                 </div>
 
@@ -106,17 +108,17 @@
 
                     <tbody>
 
-                        @foreach (var item in Model.CollectorAssignmentsHuyNqGetAllDtos)
+                        @foreach (var item in Model.PagedResult.Items)
                         {
                             var statusColor = item.Status switch
                             {
-                                "Assigned" => "bg-blue-400",
-                                "InProgress" => "bg-blue-600",
-                                "OnTheWay" => "bg-blue-600",
-                                "Pending" => "bg-yellow-500",
-                                "Collected" => "bg-green-600",
-                                "Completed" => "bg-green-600",
-                                "Cancelled" => "bg-red-600",
+                                        "Assigned" => "bg-blue-400",
+                                        "InProgress" => "bg-blue-600",
+                                        "OnTheWay" => "bg-blue-600",
+                                        "Pending" => "bg-yellow-500",
+                                        "Collected" => "bg-green-600",
+                                        "Completed" => "bg-green-600",
+                                        "Cancelled" => "bg-red-600",
                                 _ => "bg-gray-600"
                             };
 
@@ -125,7 +127,7 @@
 
                                 <td class="p-3">
                                     <span class="px-2 py-1 text-white rounded-md text-xs @statusColor">
-                                        @item.Status
+                                        @Regex.Replace(item.Status, "([a-z])([A-Z])", "$1 $2")
                                     </span>
                                 </td>
 
@@ -169,10 +171,10 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                  viewBox="0 0 16 16" class="w-5 h-5 text-gray-700">
                                                 <path d="M3 9.5a1.5 1.5 0 1 1 0-3
-                                                         1.5 1.5 0 0 1 0 3zm5 0a1.5
-                                                         1.5 0 1 1 0-3 1.5 1.5 0 0
-                                                         1 0 3zm5 0a1.5 1.5 0 1 1
-                                                         0-3 1.5 1.5 0 0 1 0 3z" />
+                                                             1.5 1.5 0 0 1 0 3zm5 0a1.5
+                                                             1.5 0 1 1 0-3 1.5 1.5 0 0
+                                                             1 0 3zm5 0a1.5 1.5 0 1 1
+                                                             0-3 1.5 1.5 0 0 1 0 3z" />
                                             </svg>
                                         </button>
 
@@ -208,7 +210,121 @@
 
                 </table>
 
-                <div class="pagination-box"></div>
+                @{
+                    var page = Model.PagedResult.Page;
+                    var pageSize = Model.PagedResult.PageSize;
+                    var totalItems = Model.PagedResult.TotalItems;
+                    var totalPages = Model.PagedResult.TotalPages;
+                }
+
+                @if (totalPages > 1)
+                {
+                    <div class="flex justify-center mt-8">
+                        <nav aria-label="Pagination Navigation">
+                            <ul class="inline-flex items-center space-x-1">
+
+                                <!-- Previous -->
+                                <li>
+                                    @if (page == 1)
+                                    {
+                                        <span class="px-3 py-2 rounded-xl border border-gray-200 text-gray-400 cursor-not-allowed text-sm flex items-center">
+                                            ‹ Prev
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Index", new {
+                                        page = page - 1,
+                                        Status = Model.Option.Status,
+                                        CollectedWeight = Model.Option.CollectedWeight,
+                                        AssignedDate = Model.Option.AssignedDate?.ToString("yyyy-MM-dd")
+                                    })"
+                                       class="px-3 py-2 rounded-xl border transition-all text-sm flex items-center">
+                                            ‹ Prev
+                                        </a>
+                                    }
+                                  
+                                </li>
+
+                                <!-- First page -->
+                                @if (page > 3)
+                                {
+                                    <li>
+                                        <a href="?page=1"
+                                           class="px-3 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 hover:shadow-sm transition-all text-sm">
+                                            1
+                                        </a>
+                                    </li>
+                                    <li><span class="px-2 text-gray-400">...</span></li>
+                                }
+
+                                <!-- Middle pages -->
+                                @for (int i = Math.Max(1, page - 2); i <= Math.Min(totalPages, page + 2); i++)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", new {
+                                            page = i,
+                                            Status = Model.Option.Status,
+                                            CollectedWeight = Model.Option.CollectedWeight,
+                                            AssignedDate = Model.Option.AssignedDate?.ToString("yyyy-MM-dd")
+                                        })"
+                                           class="px-3 py-2 rounded-xl border text-sm transition-all
+                                        @(i == page
+                                                                                ? "border-green-600 bg-green-600 text-white shadow-md" 
+                                                                                : "border-gray-300 text-gray-700 hover:bg-gray-100 hover:shadow-sm")">
+                                        @i
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Last page -->
+                                @if (page < totalPages - 2)
+                                {
+                                    <li><span class="px-2 text-gray-400">...</span></li>
+
+                                    <li>
+                                        <a href="?page=@totalPages"
+                                           class="px-3 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 hover:shadow-sm transition-all text-sm">
+                                            @totalPages
+                                        </a>
+                                    </li>
+                                }
+
+                                <!-- Next -->
+                                <li>
+                                    @if (page == totalPages)
+                                    {
+                                        <span class="px-3 py-2 rounded-xl border border-gray-200 text-gray-400 cursor-not-allowed text-sm flex items-center">
+                                            Next ›
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Index", new {
+                                            page = page + 1,
+                                            Status = Model.Option.Status,
+                                            CollectedWeight = Model.Option.CollectedWeight,
+                                            AssignedDate = Model.Option.AssignedDate?.ToString("yyyy-MM-dd")
+                                        })"
+                                           class="px-3 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 hover:shadow-sm transition-all text-sm flex items-center">
+                                            Next ›
+                                        </a>
+                                    }
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                }
+
+
+                @* <div class="flex justify-center mt-4">
+                    <div class="pagination-box"
+                    data-total="@Model.PagedResult.TotalItems"
+                    data-page="@Model.PagedResult.Page"
+                    data-limit="@Model.PagedResult.PageSize"></div>
+                </div> *@
+                
             </div>
 
         </div>

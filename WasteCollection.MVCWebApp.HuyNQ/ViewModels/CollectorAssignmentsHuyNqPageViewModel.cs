@@ -5,7 +5,9 @@ namespace WasteCollection.MVCWebApp.HuyNQ.ViewModels;
 
 public class CollectorAssignmentsHuyNqPageViewModel
 {
-    public IEnumerable<CollectorAssignmentsHuyNqGetAllDto> CollectorAssignmentsHuyNqGetAllDtos { get; set; } = [];
+    public PagedResult<CollectorAssignmentsHuyNqGetAllDto> PagedResult { get; set; } = new();
 
     public CollectorAssignmentsHuyNqSearchOptions Option { get; set; } = new("", null, null);
+
+    public PagedRequest PagedRequest { get; set; } = new();
 }

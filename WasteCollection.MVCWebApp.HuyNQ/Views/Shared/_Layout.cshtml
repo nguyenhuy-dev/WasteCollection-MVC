@@ -5,67 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WasteCollection.MVCWebApp.HuyNQ</title>
     <script type="importmap"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WasteCollection.MVCWebApp.HuyNQ.styles.css" asp-append-version="true" />
-    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom shadow-sm py-3">
-            <div class="container-fluid">
+        <nav class="bg-white shadow-sm border-b">
+            <div class="container mx-auto px-4 flex items-center justify-between py-3">
 
                 <!-- Logo -->
-                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="font-bold text-xl text-green-700" asp-controller="Home" asp-action="Index">
                     WasteCollection.MVCWebApp.HuyNQ
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <!-- Mobile Toggle -->
+                <button id="navToggle"
+                        class="lg:hidden p-2 rounded-md border border-gray-300">
+                    <svg id="navToggleIcon" xmlns="http://www.w3.org/2000/svg"
+                         class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
 
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav ms-auto">
+                <!-- Desktop Menu -->
+                <div id="mainNav" class="hidden lg:flex lg:items-center">
+                    <ul class="flex items-center space-x-6">
 
-                        <li class="nav-item">
-                            <a class="nav-link nav-hover px-3" asp-controller="Home" asp-action="Index">
-                                Home
-                            </a>
+                        <li>
+                            <a class="nav-hover px-3" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link nav-hover px-3" asp-controller="CollectorAssignmentsHuyNqs" asp-action="Index">
+                        <li>
+                            <a class="nav-hover px-3" asp-controller="CollectorAssignmentsHuyNqs" asp-action="Index">
                                 Collector Assignments
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link nav-hover px-3" asp-controller="Home" asp-action="Privacy">
-                                Privacy
-                            </a>
+                        <li>
+                            <a class="nav-hover px-3" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        <!-- LOGIN BUTTON -->
+                        <!-- LOGIN / LOGOUT -->
                         @if (User.Identity != null && !User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item ms-3">
-                                <a asp-controller="Auth"
-                                   asp-action="Login"
-                                   class="btn px-4 py-1 fw-semibold"
-                                   style="background:linear-gradient(135deg,#1b8a4f,#37b26c); color:white; border-radius:50px;">
+                            <li>
+                                <a asp-controller="Auth" asp-action="Login"
+                                   class="px-4 py-2 font-semibold text-white rounded-full"
+                                   style="background:linear-gradient(135deg,#1b8a4f,#37b26c);">
                                     Login
                                 </a>
                             </li>
                         }
                         else
                         {
-                            <!-- LOGOUT BUTTON -->
-                            <li class="nav-item ms-3">
+                            <li>
                                 <form asp-controller="Auth" asp-action="Logout" method="post">
                                     <button type="submit"
-                                            class="btn px-4 py-1 fw-semibold"
-                                            style="background:white; color:#1b8a4f; border:2px solid #37b26c; border-radius:50px;">
+                                            class="px-4 py-2 font-semibold rounded-full border"
+                                            style="background:white; color:#1b8a4f; border-color:#37b26c;">
                                         Logout
                                     </button>
                                 </form>
@@ -73,7 +75,6 @@
                         }
                     </ul>
                 </div>
-
             </div>
         </nav>
     </header>
@@ -200,11 +201,39 @@
                 transform: translateX(3px);
             }
     </style>
+    
+    <style>
+        .nav-hover {
+            position: relative;
+            font-weight: 500;
+            transition: 0.25s;
+            color: #333 !important;
+        }
+
+            .nav-hover::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: -3px;
+                width: 0%;
+                height: 2px;
+                background-color: #37b26c;
+                transition: width .25s;
+            }
+
+            .nav-hover:hover {
+                color: #1b8a4f !important;
+            }
+
+                .nav-hover:hover::after {
+                    width: 100%;
+                }
+    </style>
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

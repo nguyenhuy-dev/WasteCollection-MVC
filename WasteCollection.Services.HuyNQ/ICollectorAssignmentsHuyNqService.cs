@@ -17,4 +17,6 @@ public interface ICollectorAssignmentsHuyNqService
     Task<int> UpdateAsync(CollectorAssignmentsHuyNq asm);
 
     Task<bool> DeleteAsync(Guid id);
+
+    Task<PagedResult<CollectorAssignmentsHuyNqGetAllDto>> PaginateAsync(List<CollectorAssignmentsHuyNqGetAllDto> dtos, PagedRequest pagedRequest);
 }
